@@ -34,11 +34,31 @@
    :body "<h1>You'll never walk alone</h1>"
    :headers {"Content-Type" "text/html"}})
 
+(def operands {"+" + "-" - "*" * ":" /})
+
+(defn calculator
+  "A very simple calculator that can add, divide, subtract and multiply.
+  This is done through the magic of variable path elements."
+  [request]
+  (let [a (Integer. (get-in request [:route-params :a]))
+        b (Integer. (get-in request [:route-params :b]))
+        op (get-in request [:route-params :op])
+        f  (get operands op)]
+    (if f
+      {:status 200
+       :body (str "Calculated result: " (f a b))
+       :headers {}}
+      
+      {:status 404
+       :body "Sorry, unknown operator.  I only recognise + - * : (: is for division)"
+       :headers {}})))
+
 (defroutes app
   (GET "/" [] welcome)
   (GET "/goodbye" [] goodbye)
   (GET "/ynwa" [] ynwa)
   (GET "/request-info" [] handle-dump)
+  (GET "/calculator/:op/:a/:b" [] calculator)
   (not-found "<h1>This is not the page you are looking for</h1>
               <p>Sorry, the page you requested was not found!</p>"))
 
