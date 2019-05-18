@@ -16,9 +16,28 @@
    <p>I now use defroutes to manage incoming requests</p>"
    :headers {"Content-Type" "text/html"}})
 
+(defn goodbye
+  "A song to wish you goodbye"
+  [request]
+  {:status 200
+   :body "<h1>Walking back to happiness</h1>
+          <p>Walking back to happiness with you</p>
+          <p>Said, Farewell to loneliness I knew</p>
+          <p>Laid aside foolish pride</p>
+          <p>Learnt the truth from tears I cried</p>"
+   :headers {"Content-Type" "text/html"}})
+
+(defn ynwa
+  "A song to wish you goodbye"
+  [request]
+  {:status 200
+   :body "<h1>You'll never walk alone</h1>"
+   :headers {"Content-Type" "text/html"}})
 
 (defroutes app
   (GET "/" [] welcome)
+  (GET "/goodbye" [] goodbye)
+  (GET "/ynwa" [] ynwa)
   (not-found "<h1>This is not the page you are looking for</h1>
        <p>Sorry, the page you requested was not found!</p>"))
 
