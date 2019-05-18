@@ -4,4 +4,5 @@
   :license {:name "Creative Commons Attribution Share-Alike 4.0 International"
             :url "https://creativecommons.org"}
   :dependencies [[org.clojure/clojure "1.10.0"]]
+  :main todo-list.core
   :repl-options {:init-ns todo-list.core})
