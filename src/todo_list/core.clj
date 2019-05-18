@@ -28,16 +28,24 @@
    :headers {"Content-Type" "text/html"}})
 
 (defn ynwa
-  "A song to wish you goodbye"
+  "Liverpool F.C theme song"
   [request]
   {:status 200
    :body "<h1>You'll never walk alone</h1>"
+   :headers {"Content-Type" "text/html"}})
+
+(defn request-info
+  "View the information contained in the request, useful for debugging"
+  [request]
+  {:status 200
+   :body (pr-str request)
    :headers {"Content-Type" "text/html"}})
 
 (defroutes app
   (GET "/" [] welcome)
   (GET "/goodbye" [] goodbye)
   (GET "/ynwa" [] ynwa)
+  (GET "/request-info" [] request-info)
   (not-found "<h1>This is not the page you are looking for</h1>
        <p>Sorry, the page you requested was not found!</p>"))
 
