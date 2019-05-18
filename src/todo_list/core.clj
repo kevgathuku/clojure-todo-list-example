@@ -2,8 +2,8 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [defroutes GET]]
-            [compojure.route :refer [not-found]]))
-
+            [compojure.route :refer [not-found]]
+            [ring.handler.dump :refer [handle-dump]]))
 
 (defn welcome
   "A ring handler to process all requests sent to the webapp.
@@ -34,20 +34,13 @@
    :body "<h1>You'll never walk alone</h1>"
    :headers {"Content-Type" "text/html"}})
 
-(defn request-info
-  "View the information contained in the request, useful for debugging"
-  [request]
-  {:status 200
-   :body (pr-str request)
-   :headers {"Content-Type" "text/html"}})
-
 (defroutes app
   (GET "/" [] welcome)
   (GET "/goodbye" [] goodbye)
   (GET "/ynwa" [] ynwa)
-  (GET "/request-info" [] request-info)
+  (GET "/request-info" [] handle-dump)
   (not-found "<h1>This is not the page you are looking for</h1>
-       <p>Sorry, the page you requested was not found!</p>"))
+              <p>Sorry, the page you requested was not found!</p>"))
 
 (defn -dev-main
   "A simple web server using Ring & Jetty that reloads code changes via the development profile of Leiningen"
