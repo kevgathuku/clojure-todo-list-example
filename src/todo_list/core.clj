@@ -1,6 +1,7 @@
-(ns todo-list.core)
+(ns todo-list.core
+  (:require [clojure.string :as string]))
 
 (defn -main
   "I don't do a whole lot."
   []
-  (println "Hello, World!"))
+  (println (string/reverse "RedRum")))
