@@ -3,35 +3,46 @@
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found]]
-            [ring.handler.dump :refer [handle-dump]]))
+            [ring.handler.dump :refer [handle-dump]]
+            [hiccup.core :as markup]))
 
 (defn welcome
   "A ring handler to process all requests sent to the webapp.
   Takes the request map as its argument and returns a response map"
   [request]
   {:status 200
-   :body
-   "<h1>Hello, from Clojure!</h1>
-   <p>Welcome to your first Clojure app, I now update automatically.<p>
-   <p>I now use defroutes to manage incoming requests</p>"
+   :body (markup/html [:body
+                       [:title "Welcome"]
+                       [:h1 "Hello, from Clojure!"]
+                       [:p "Welcome to your first Clojure app, I now update automatically in dev mode"]
+                       [:p "I now use defroutes to manage incoming requests"]
+                       [:p "I also use Hiccup to generate this message!"]])
    :headers {"Content-Type" "text/html"}})
 
 (defn goodbye
   "A song to wish you goodbye"
   [request]
   {:status 200
-   :body "<h1>Walking back to happiness</h1>
-          <p>Walking back to happiness with you</p>
-          <p>Said, Farewell to loneliness I knew</p>
-          <p>Laid aside foolish pride</p>
-          <p>Learnt the truth from tears I cried</p>"
+   :body (markup/html [:body
+                       [:title "Goodbye"]
+                       [:h1 "Walking back to happiness"]
+                       [:p "Walking back to happiness with you"]
+                       [:p "Said, Farewell to loneliness I knew"]
+                       [:p "Laid aside foolish pride"]
+                       [:p "Learnt the truth from tears I cried"]])
    :headers {"Content-Type" "text/html"}})
 
 (defn ynwa
   "Liverpool F.C theme song"
   [request]
   {:status 200
-   :body "<h1>You'll never walk alone</h1>"
+   :body (markup/html [:body
+                       [:title "YNWA"]
+                       [:h1 "You'll never walk alone"]
+                       [:p "When you walk through a storm"]
+                       [:p "hold your head up high"]
+                       [:p "And don't be afraid of the dark."]
+                       [:p "At the end of a storm is a golden sky"]])
    :headers {"Content-Type" "text/html"}})
 
 (def operands {"+" + "-" - "*" * ":" /})
@@ -59,8 +70,9 @@
   (GET "/ynwa" [] ynwa)
   (GET "/request-info" [] handle-dump)
   (GET "/calculator/:op/:a/:b" [] calculator)
-  (not-found "<h1>This is not the page you are looking for</h1>
-              <p>Sorry, the page you requested was not found!</p>"))
+  (not-found (markup/html [:body
+                           [:h1 "This is not the page you are looking for"]
+                           [:p "Sorry, the page you requested was not found!"]])))
 
 (defn -dev-main
   "A simple web server using Ring & Jetty that reloads code changes via the development profile of Leiningen"
